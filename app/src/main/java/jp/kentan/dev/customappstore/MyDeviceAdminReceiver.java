@@ -5,6 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+/**
+ * Run command first.
+ * adb shell dpm set-device-owner jp.kentan.dev.customappstore/.MyDeviceAdminReceiver
+ */
+
 public class MyDeviceAdminReceiver extends DeviceAdminReceiver {
 
     @Override
