@@ -30,29 +30,32 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.install_button).setOnClickListener((view) -> {
             mTextView.setText("Install clicked.");
 
-            new Thread(new Runnable(){
-                public void run() {
-                    try {
-                        URL url = new URL("https://example.com/example.apk");
+            new Thread(() -> {
+                try {
+                    URL url = new URL("https://example.com/example.apk");
 
-                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                        conn.setAllowUserInteraction(false);
-                        conn.setInstanceFollowRedirects(true);
-                        conn.setRequestMethod("GET");
-                        conn.connect();
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setAllowUserInteraction(false);
+                    conn.setInstanceFollowRedirects(true);
+                    conn.setRequestMethod("GET");
+                    conn.connect();
 
-                        MyPackageInstaller.installPackage(getApplicationContext(), "com.example", conn.getInputStream());
+                    MyPackageInstaller.installPackage(getApplicationContext(), "com.example", conn.getInputStream());
 
 //                        boolean success = installPackage(getApplicationContext(), conn.getInputStream(), "gtav");
 //                        Log.d("INSTALL", "" + success);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }).start();
         });
 
         findViewById(R.id.uninstall_button).setOnClickListener((view) -> {
+            try {
+                MyPackageInstaller.uninstallPackage(MainActivity.this, "com.example");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             mTextView.setText("Uninstall clicked.");
         });
     }

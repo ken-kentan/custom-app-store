@@ -1,5 +1,6 @@
 package jp.kentan.dev.customappstore;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +13,6 @@ class MyPackageInstaller {
 
     static void installPackage(Context context, String packageName, InputStream apkStream) throws Exception {
         PackageInstaller packageInstaller = context.getPackageManager().getPackageInstaller();
-
 
         PackageInstaller.SessionParams params = new PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL);
         params.setAppPackageName(packageName);
@@ -46,5 +46,14 @@ class MyPackageInstaller {
         session.close();
 
         Log.d("MyPackageInstaller", "session close");
+    }
+
+    static void uninstallPackage(Activity activity, String packageName) throws Exception {
+        PackageInstaller packageInstaller = activity.getPackageManager().getPackageInstaller();
+
+        Intent intent = new Intent(activity, activity.getClass());
+        PendingIntent sender = PendingIntent.getActivity(activity, 0, intent, 0);
+
+        packageInstaller.uninstall(packageName, sender.getIntentSender());
     }
 }
